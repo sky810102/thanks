@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우리집 감사일기</title>
+<meta name="apple-mobile-web-app-title" content="감사일기">
+<meta name="application-name" content="감사일기">
+<meta name="theme-color" content="#03C75A">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+  html, body { margin: 0; height: 100%; background: #03C75A; color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  .wrap { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 0 24px; text-align: center; }
+  img { width: 96px; height: 96px; border-radius: 24px; box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+  h1 { font-size: 1.4rem; margin: 0; letter-spacing: -0.02em; }
+  p { margin: 0; opacity: .85; }
+  [hidden] { display: none !important; }
+  #guide { background: rgba(255,255,255,.14); border-radius: 18px; padding: 16px 18px; max-width: 340px; text-align: left; line-height: 1.6; }
+  #guide p { opacity: 1; }
+  #guide ul { margin: 10px 0; padding-left: 18px; }
+  .btn { display: inline-block; background: #fff; color: #02964A; font-weight: 800; text-decoration: none; padding: 14px 28px; border-radius: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img src="apple-touch-icon.png" alt="">
+  <h1>우리집 감사일기</h1>
+  <p id="state">여는 중…</p>
+  <div id="guide" hidden>
+    <p>처음 한 번만, 이 화면을 홈 화면에 추가해 주세요.</p>
+    <ul>
+      <li><b>아이폰</b>: 아래쪽 공유 버튼 → 홈 화면에 추가</li>
+      <li><b>안드로이드</b>: 오른쪽 위 ⋮ 메뉴 → 홈 화면에 추가</li>
+    </ul>
+    <p>다음부터는 아이콘을 누르면 바로 열려요.</p>
+  </div>
+  <a id="go" class="btn" href="#">감사일기 열기</a>
+</div>
+<script>
+  // ▼ Apps Script 웹 앱 주소(…/exec)로 바꿔 주세요.
+  var APP_URL = 'https://script.google.com/macros/s/여기에_웹앱_주소/exec';
+
+  document.getElementById('go').href = APP_URL;
+  var seen = false;
+  try { seen = localStorage.getItem('installed') === 'Y'; localStorage.setItem('installed', 'Y'); } catch (e) {}
+
+  if (APP_URL.indexOf('여기에') >= 0) {
+    document.getElementById('state').textContent = 'index.html 안의 APP_URL을 웹 앱 주소로 바꿔 주세요.';
+  } else if (!seen) {
+    // 처음 연 휴대폰: 바로 넘어가지 않고 홈 화면 추가 방법을 보여 줌
+    document.getElementById('state').hidden = true;
+    document.getElementById('guide').hidden = false;
+  } else {
+    setTimeout(function () { location.replace(APP_URL); }, 300);
+  }
+</script>
+</body>
+</html>
