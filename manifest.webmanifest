@@ -1,7 +1,7 @@
 {
   "name": "우리집 감사일기",
   "short_name": "감사일기",
-  "start_url": "./",
+    "start_url": "./?go=1",
   "display": "browser",
   "background_color": "#03C75A",
   "theme_color": "#03C75A",
