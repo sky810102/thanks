@@ -35,10 +35,11 @@
     <p>화면이 그대로면 카카오톡 화면의 <b>⋯</b>(아이폰은 오른쪽 아래, 안드로이드는 오른쪽 위) 버튼을 누르고 <b>다른 브라우저로 열기</b>를 눌러 주세요.</p>
   </div>
   <div id="guide" class="box" hidden>
-    <p>처음 한 번만, 이 화면을 홈 화면에 추가해 주세요.</p>
+    <p>처음 한 번만, <b>이 초록 화면에서</b> 홈 화면에 추가해 주세요.</p>
     <ul>
       <li><b>아이폰</b>: 아래쪽 공유 버튼 → 홈 화면에 추가</li>
-      <li><b>안드로이드</b>: 오른쪽 위 ⋮ 메뉴 → 홈 화면에 추가</li>
+      <li><b>삼성 인터넷</b>: 메뉴(≡ 또는 ⋮) → 현재 페이지 추가 → 홈 화면</li>
+      <li><b>크롬</b>: 오른쪽 위 ⋮ 메뉴 → 홈 화면에 추가</li>
     </ul>
     <p>다음부터는 아이콘을 누르면 바로 열려요.</p>
   </div>
@@ -58,19 +59,21 @@
     document.getElementById('kakao').hidden = false;
   }
 
-  var seen = false;
-  try { seen = localStorage.getItem('installed') === 'Y'; localStorage.setItem('installed', 'Y'); } catch (e) {}
+  // 홈 화면 아이콘으로 열었을 때만(?go=1) 바로 앱으로 넘어가고,
+  // 링크로 처음 열었을 때는 이 화면에 머물러 홈 화면에 추가할 수 있게 함
+  var goNow = /[?&]go=1/.test(location.search);
 
   if (inKakao) {
     // 위에서 처리
   } else if (APP_URL.indexOf('여기에') >= 0) {
     document.getElementById('state').textContent = 'index.html 안의 APP_URL을 웹 앱 주소로 바꿔 주세요.';
-  } else if (!seen) {
-    // 처음 연 휴대폰: 바로 넘어가지 않고 홈 화면 추가 방법을 보여 줌
+  } else if (goNow) {
+    location.replace(APP_URL);
+  } else {
     document.getElementById('state').hidden = true;
     document.getElementById('guide').hidden = false;
-  } else {
-    setTimeout(function () { location.replace(APP_URL); }, 300);
+    // 지금 주소를 ?go=1로 바꿔 두면, 이 상태로 홈 화면에 추가한 아이콘은 바로 앱을 엶
+    try { history.replaceState(null, '', location.pathname + '?go=1'); } catch (e) {}
   }
 </script>
 </body>
